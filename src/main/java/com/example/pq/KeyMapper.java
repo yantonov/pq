@@ -1,6 +1,6 @@
 package com.example.pq;
 
-public interface KeyMapper<Key, Integer> {
+public interface KeyMapper<Key> {
     Integer get(Key key);
 
     boolean contains(Key key);
@@ -8,4 +8,6 @@ public interface KeyMapper<Key, Integer> {
     void remove(Key key);
 
     void put(Key key, Integer value);
+
+    void clear();
 }

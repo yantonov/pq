@@ -1,20 +1,18 @@
 package com.example.pq;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public abstract class BinaryHeapPriorityQueue<ItemKey, ItemPriority extends Comparable<ItemPriority>>
         implements AbstractPriorityQueue<ItemKey, ItemPriority> {
 
     private List<QueueItem<ItemKey, ItemPriority>> queue;
-    private Map<ItemKey, Integer> keyMapper;
+    private KeyMapper<ItemKey> keyMapper;
     private int queueSize;
 
     public BinaryHeapPriorityQueue() {
         initQueue();
-        this.keyMapper = new HashMap<ItemKey, Integer>();
+        this.keyMapper = new HashMapKeyMapper<ItemKey>();
     }
 
     private void initQueue() {
@@ -23,14 +21,14 @@ public abstract class BinaryHeapPriorityQueue<ItemKey, ItemPriority extends Comp
         this.queue.add(null);
     }
 
-    public BinaryHeapPriorityQueue(Map<ItemKey, Integer> keyMapper) {
+    public BinaryHeapPriorityQueue(KeyMapper<ItemKey> keyMapper) {
         this();
         this.keyMapper = keyMapper;
     }
 
     @Override
     public boolean insert(QueueItem<ItemKey, ItemPriority> item) {
-        if (keyMapper.containsKey(item.getKey()))
+        if (keyMapper.contains(item.getKey()))
             return false;
         queue.add(item);
         ++queueSize;
@@ -94,7 +92,7 @@ public abstract class BinaryHeapPriorityQueue<ItemKey, ItemPriority extends Comp
 
     @Override
     public boolean changeKey(QueueItem<ItemKey, ItemPriority> item) {
-        if (!keyMapper.containsKey(item.getKey())) {
+        if (!keyMapper.contains(item.getKey())) {
             return false;
         }
         int index = keyMapper.get(item.getKey());

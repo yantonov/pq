@@ -1,14 +1,12 @@
 package com.example.pq;
 
-import java.util.Map;
-
 public class BinaryHeapMinPriorityQueue<ItemKey, ItemPriority extends Comparable<ItemPriority>>
         extends BinaryHeapPriorityQueue<ItemKey, ItemPriority> implements MinPriorityQueue<ItemKey, ItemPriority> {
 
     public BinaryHeapMinPriorityQueue() {
     }
 
-    public BinaryHeapMinPriorityQueue(Map<ItemKey, Integer> keyMapper) {
+    public BinaryHeapMinPriorityQueue(KeyMapper<ItemKey> keyMapper) {
         super(keyMapper);
     }
 

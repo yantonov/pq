@@ -1,7 +1,5 @@
 package com.example.pq;
 
-import java.util.Map;
-
 public class BinaryHeapMaxPriorityQueue<ItemKey, ItemPriority extends Comparable<ItemPriority>>
         extends BinaryHeapPriorityQueue<ItemKey, ItemPriority>
         implements MaxPriorityQueue<ItemKey, ItemPriority> {
@@ -9,7 +7,7 @@ public class BinaryHeapMaxPriorityQueue<ItemKey, ItemPriority extends Comparable
     public BinaryHeapMaxPriorityQueue() {
     }
 
-    public BinaryHeapMaxPriorityQueue(Map keyMapper) {
+    public BinaryHeapMaxPriorityQueue(KeyMapper<ItemKey> keyMapper) {
         super(keyMapper);
     }
 
