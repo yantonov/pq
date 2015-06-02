@@ -22,6 +22,11 @@ public class BinaryHeapMaxPriorityQueue<ItemKey, ItemPriority extends Comparable
     }
 
     @Override
+    public QueueItem<ItemKey, ItemPriority> extractMaximum() {
+        return this.extract();
+    }
+
+    @Override
     public boolean increaseKey(QueueItem<ItemKey, ItemPriority> item) {
         return this.changeKey(item);
     }

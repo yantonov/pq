@@ -55,6 +55,14 @@ public abstract class BinaryHeapPriorityQueue<ItemKey, ItemPriority extends Comp
         if (queueSize == 0) {
             return null;
         }
+        return queue.get(1);
+    }
+
+    @Override
+    public QueueItem<ItemKey, ItemPriority> extract() {
+        if (queueSize == 0) {
+            return null;
+        }
         QueueItem<ItemKey, ItemPriority> max = queue.get(1);
         keyMapper.remove(max.getKey());
         if (queueSize > 1) {

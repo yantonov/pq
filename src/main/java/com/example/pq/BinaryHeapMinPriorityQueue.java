@@ -21,6 +21,11 @@ public class BinaryHeapMinPriorityQueue<ItemKey, ItemPriority extends Comparable
     }
 
     @Override
+    public QueueItem<ItemKey, ItemPriority> extractMinimum() {
+        return this.extract();
+    }
+
+    @Override
     public boolean decreaseKey(QueueItem<ItemKey, ItemPriority> item) {
         return this.changeKey(item);
     }

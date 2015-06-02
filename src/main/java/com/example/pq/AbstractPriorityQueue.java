@@ -5,6 +5,8 @@ public interface AbstractPriorityQueue<ItemKey, ItemPriority extends Comparable<
 
     QueueItem<ItemKey, ItemPriority> top();
 
+    QueueItem<ItemKey, ItemPriority> extract();
+
     boolean changeKey(QueueItem<ItemKey, ItemPriority> item);
 
     int size();
