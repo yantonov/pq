@@ -6,7 +6,8 @@ import java.util.List;
 public abstract class BinaryHeapPriorityQueue<ItemKey, ItemPriority extends Comparable<ItemPriority>>
         implements AbstractPriorityQueue<ItemKey, ItemPriority> {
 
-    private List<QueueItem<ItemKey, ItemPriority>> queue;
+    private List<ItemKey> queueKey;
+    private List<ItemPriority> queuePriority;
     private KeyMapper<ItemKey> keyMapper;
     private int queueSize;
 
@@ -17,8 +18,10 @@ public abstract class BinaryHeapPriorityQueue<ItemKey, ItemPriority extends Comp
 
     private void initQueue() {
         queueSize = 0;
-        this.queue = new ArrayList<QueueItem<ItemKey, ItemPriority>>();
-        this.queue.add(null);
+        this.queueKey = new ArrayList<ItemKey>();
+        this.queueKey.add(null);
+        this.queuePriority = new ArrayList<ItemPriority>();
+        this.queuePriority.add(null);
     }
 
     public BinaryHeapPriorityQueue(KeyMapper<ItemKey> keyMapper) {
@@ -27,22 +30,23 @@ public abstract class BinaryHeapPriorityQueue<ItemKey, ItemPriority extends Comp
     }
 
     @Override
-    public boolean insert(QueueItem<ItemKey, ItemPriority> item) {
-        if (keyMapper.contains(item.getKey()))
+    public boolean insert(ItemKey key, ItemPriority priority) {
+        if (keyMapper.contains(key))
             return false;
-        queue.add(item);
+        queueKey.add(key);
+        queuePriority.add(priority);
         ++queueSize;
-        keyMapper.put(item.getKey(), queueSize);
+        keyMapper.put(key, queueSize);
         moveUp(queueSize);
         return true;
     }
 
     private void moveUp(int startIndex) {
-        ItemPriority itemPriority = queue.get(startIndex).getPriority();
+        ItemPriority itemPriority = queuePriority.get(startIndex);
         for (int index = startIndex; index > 1; index >>= 1) {
             int parentIndex = index >> 1;
-            QueueItem<ItemKey, ItemPriority> parentItem = queue.get(parentIndex);
-            if (isMoreOptimalPriority(parentItem.getPriority(), itemPriority)) {
+            ItemPriority parentPriority = queuePriority.get(parentIndex);
+            if (isMoreOptimalPriority(parentPriority, itemPriority)) {
                 swap(parentIndex, index);
             } else {
                 break;
@@ -51,28 +55,34 @@ public abstract class BinaryHeapPriorityQueue<ItemKey, ItemPriority extends Comp
     }
 
     @Override
-    public QueueItem<ItemKey, ItemPriority> top() {
+    public ItemKey topKey() {
         if (queueSize == 0) {
             return null;
         }
-        return queue.get(1);
+       return queueKey.get(1);
     }
 
     @Override
-    public QueueItem<ItemKey, ItemPriority> extract() {
+    public ItemPriority topPriority() {
         if (queueSize == 0) {
             return null;
         }
-        QueueItem<ItemKey, ItemPriority> max = queue.get(1);
-        keyMapper.remove(max.getKey());
+        return queuePriority.get(1);
+    }
+
+    @Override
+    public void extract() {
+        ItemKey key = queueKey.get(1);
+        keyMapper.remove(key);
         if (queueSize > 1) {
-            queue.set(1, queue.get(queueSize));
-            keyMapper.put(queue.get(1).getKey(), 1);
+            queueKey.set(1, queueKey.get(queueSize));
+            queuePriority.set(1, queuePriority.get(queueSize));
+            keyMapper.put(queueKey.get(1), 1);
         }
-        queue.remove(queueSize);
+        queueKey.remove(queueSize);
+        queuePriority.remove(queueSize);
         --queueSize;
         heapify(1);
-        return max;
     }
 
     private void heapify(int startIndex) {
@@ -81,12 +91,12 @@ public abstract class BinaryHeapPriorityQueue<ItemKey, ItemPriority extends Comp
         while (true) {
             left = startIndex << 1;
             right = left + 1;
-            if ((left <= size) && (isMoreOptimalPriority(queue.get(startIndex).getPriority(), queue.get(left).getPriority()))) {
+            if ((left <= size) && (isMoreOptimalPriority(queuePriority.get(startIndex), queuePriority.get(left)))) {
                 max = left;
             } else {
                 max = startIndex;
             }
-            if ((right <= size) && (isMoreOptimalPriority(queue.get(max).getPriority(), queue.get(right).getPriority()))) {
+            if ((right <= size) && (isMoreOptimalPriority(queuePriority.get(max), queuePriority.get(right)))) {
                 max = right;
             }
             if (max != startIndex) {
@@ -99,15 +109,16 @@ public abstract class BinaryHeapPriorityQueue<ItemKey, ItemPriority extends Comp
     }
 
     @Override
-    public boolean changeKey(QueueItem<ItemKey, ItemPriority> item) {
-        if (!keyMapper.contains(item.getKey())) {
+    public boolean changeKey(ItemKey key, ItemPriority priotity) {
+        if (!keyMapper.contains(key)) {
             return false;
         }
-        int index = keyMapper.get(item.getKey());
-        if (!isMoreOptimalPriority(queue.get(index).getPriority(), item.getPriority())) {
+        int index = keyMapper.get(key);
+        if (!isMoreOptimalPriority(queuePriority.get(index), priotity)) {
             return false;
         }
-        queue.set(index, item);
+        queueKey.set(index, key);
+        queuePriority.set(index, priotity);
         moveUp(index);
         return true;
     }
@@ -115,13 +126,18 @@ public abstract class BinaryHeapPriorityQueue<ItemKey, ItemPriority extends Comp
     protected abstract boolean isMoreOptimalPriority(ItemPriority oldPriority, ItemPriority newPriority);
 
     private void swap(int firstIndex, int secondIndex) {
-        QueueItem<ItemKey, ItemPriority> first = queue.get(firstIndex);
-        QueueItem<ItemKey, ItemPriority> second = queue.get(secondIndex);
+        ItemKey firstKey = queueKey.get(firstIndex);
+        ItemKey secondKey = queueKey.get(secondIndex);
+        ItemPriority firstPriority = queuePriority.get(firstIndex);
+        ItemPriority secondPriority = queuePriority.get(secondIndex);
 
-        keyMapper.put(first.getKey(), secondIndex);
-        keyMapper.put(second.getKey(), firstIndex);
-        queue.set(firstIndex, second);
-        queue.set(secondIndex, first);
+
+        keyMapper.put(firstKey, secondIndex);
+        keyMapper.put(secondKey, firstIndex);
+        queueKey.set(firstIndex, secondKey);
+        queueKey.set(secondIndex, firstKey);
+        queuePriority.set(firstIndex, secondPriority);
+        queuePriority.set(secondIndex, firstPriority);
     }
 
     @Override

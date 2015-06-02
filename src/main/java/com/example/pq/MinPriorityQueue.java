@@ -2,9 +2,11 @@ package com.example.pq;
 
 public interface MinPriorityQueue<ItemKey, ItemPriority extends Comparable<ItemPriority>> extends AbstractPriorityQueue<ItemKey, ItemPriority> {
 
-    QueueItem<ItemKey, ItemPriority> extractMinimum();
+    void extractMinimum();
 
-    QueueItem<ItemKey, ItemPriority> minimum();
+    ItemKey minimumKey();
 
-    boolean decreaseKey(QueueItem<ItemKey, ItemPriority> item);
+    ItemPriority minimumPriotity();
+
+    boolean decreaseKey(ItemKey key, ItemPriority value);
 }

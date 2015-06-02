@@ -2,9 +2,11 @@ package com.example.pq;
 
 public interface MaxPriorityQueue<ItemKey, ItemPriority extends Comparable<ItemPriority>>
         extends AbstractPriorityQueue<ItemKey, ItemPriority> {
-    QueueItem<ItemKey, ItemPriority> extractMaximum();
+    void extractMaximum();
 
-    QueueItem<ItemKey, ItemPriority> maximum();
+    ItemKey maximumKey();
 
-    boolean increaseKey(QueueItem<ItemKey, ItemPriority> item);
+    ItemPriority maximumPriority();
+
+    boolean increaseKey(ItemKey key, ItemPriority priotity);
 }

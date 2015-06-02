@@ -1,13 +1,16 @@
 package com.example.pq;
 
 public interface AbstractPriorityQueue<ItemKey, ItemPriority extends Comparable<ItemPriority>> {
-    boolean insert(QueueItem<ItemKey, ItemPriority> item);
 
-    QueueItem<ItemKey, ItemPriority> top();
+    boolean insert(ItemKey key, ItemPriority priotity);
 
-    QueueItem<ItemKey, ItemPriority> extract();
+    ItemKey topKey();
 
-    boolean changeKey(QueueItem<ItemKey, ItemPriority> item);
+    ItemPriority topPriority();
+
+    void extract();
+
+    boolean changeKey(ItemKey key, ItemPriority priority);
 
     int size();
 

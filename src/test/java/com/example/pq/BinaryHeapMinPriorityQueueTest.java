@@ -15,32 +15,32 @@ public class BinaryHeapMinPriorityQueueTest {
 
     @Test
     public void minimumOnEmptyQueue() {
-        Assert.assertNull(queue.minimum());
+
+        Assert.assertNull(queue.minimumKey());
+        Assert.assertNull(queue.minimumPriotity());
     }
 
     @Test
     public void insertIncreaseTheSizeOfQueue() {
-        QueueTestItem item = new QueueTestItem(1, 1);
-        queue.insert(item);
+        queue.insert(1, 1);
         Assert.assertFalse(queue.isEmpty());
         Assert.assertEquals(1, queue.size());
     }
 
     @Test
     public void minimumReturnsElementFromQueue() {
-        QueueTestItem item = new QueueTestItem(123, 456);
-        queue.insert(item);
-        QueueItem<Integer, Integer> minimum = queue.minimum();
+        queue.insert(123, 456);
+        Integer minimumKey = queue.minimumKey();
+        Integer minimumPriority = queue.minimumPriotity();
         Assert.assertEquals(1, queue.size());
         Assert.assertFalse(queue.isEmpty());
-        Assert.assertEquals(123, (int) minimum.getKey());
-        Assert.assertEquals(456, (int) minimum.getPriority());
+        Assert.assertEquals(123, (int) minimumKey);
+        Assert.assertEquals(456, (int) minimumPriority);
     }
 
     @Test
     public void extractMaximum() {
-        QueueTestItem item = new QueueTestItem(123, 456);
-        queue.insert(item);
+        queue.insert(123, 456);
         queue.extractMinimum();
         Assert.assertEquals(0, queue.size());
         Assert.assertTrue(queue.isEmpty());
@@ -50,63 +50,73 @@ public class BinaryHeapMinPriorityQueueTest {
     public void getMinimumTest() {
         int count = 3;
         for (int i = 1; i <= count; ++i) {
-            queue.insert(new QueueTestItem(i, i));
+            queue.insert(i, i);
         }
         for (int i = 1, priority = 1; i <= count; ++i, ++priority) {
-            QueueItem<Integer, Integer> maximum = queue.extractMinimum();
+            Integer maximumKey = queue.topKey();
+            Integer maximumPriority = queue.topPriority();
+            queue.extractMinimum();
             Assert.assertEquals(count - i, queue.size());
-            Assert.assertEquals(priority, (int) maximum.getPriority());
-            Assert.assertEquals(priority, (int) maximum.getKey());
+            Assert.assertEquals(priority, (int) maximumPriority);
+            Assert.assertEquals(priority, (int) maximumKey);
         }
     }
 
     @Test
     public void addRemoveTest() {
-        queue.insert(new QueueTestItem(11, 1));
-        queue.insert(new QueueTestItem(22, 2));
-        queue.insert(new QueueTestItem(33, 3));
-        QueueItem<Integer, Integer> maximum = queue.extractMinimum();
-        Assert.assertEquals(1, (int) maximum.getPriority());
-        Assert.assertEquals(11, (int) maximum.getKey());
-        queue.insert(new QueueTestItem(44, 4));
-        queue.insert(new QueueTestItem(55, 5));
-        maximum = queue.extractMinimum();
-        Assert.assertEquals(2, (int) maximum.getPriority());
-        Assert.assertEquals(22, (int) maximum.getKey());
+        queue.insert(11, 1);
+        queue.insert(22, 2);
+        queue.insert(33, 3);
+        Integer key = queue.topKey();
+        Integer priority = queue.topPriority();
+        queue.extractMinimum();
+        Assert.assertEquals(1, (int) priority);
+        Assert.assertEquals(11, (int) key);
+        queue.insert(44, 4);
+        queue.insert(55, 5);
+        key = queue.topKey();
+        priority = queue.topPriority();
+        Assert.assertEquals(2, (int) priority);
+        Assert.assertEquals(22, (int) key);
     }
 
     @Test
     public void decreaseKeyForMultipleElements() {
-        queue.insert(new QueueTestItem(11, 1));
-        queue.insert(new QueueTestItem(22, 2));
-        queue.insert(new QueueTestItem(33, 3));
-        queue.decreaseKey(new QueueTestItem(11, -1));
-        QueueItem<Integer, Integer> maximum = queue.minimum();
-        Assert.assertEquals(-1, (int) maximum.getPriority());
-        Assert.assertEquals(11, (int) maximum.getKey());
-        queue.insert(maximum);
-        queue.decreaseKey(new QueueTestItem(22, -2));
-        maximum = queue.extractMinimum();
-        Assert.assertEquals(-2, (int) maximum.getPriority());
-        Assert.assertEquals(22, (int) maximum.getKey());
+        queue.insert(11, 1);
+        queue.insert(22, 2);
+        queue.insert(33, 3);
+        queue.decreaseKey(11, -1);
+        Integer minKey = queue.minimumKey();
+        Integer minPriority = queue.minimumPriotity();
+        queue.extractMinimum();
+        Assert.assertEquals(-1, (int)minPriority);
+        Assert.assertEquals(11, (int)minKey);
+        queue.insert(minKey,minPriority);
+        queue.decreaseKey(22, -2);
+        minKey = queue.minimumKey();
+        minPriority = queue.minimumPriotity();
+        Assert.assertEquals(-2, (int) minPriority);
+        Assert.assertEquals(22, (int) minKey);
     }
 
     @Test
     public void decreaseKeyForSingleElement() {
-        queue.insert(new QueueTestItem(10, 1));
-        queue.decreaseKey(new QueueTestItem(10, 0));
-        QueueItem<Integer, Integer> maximum = queue.extractMinimum();
-        Assert.assertEquals(0, (int) maximum.getPriority());
-        Assert.assertEquals(10, (int) maximum.getKey());
+        queue.insert(10, 1);
+        queue.decreaseKey(10, 0);
+        Integer minKey = queue.minimumKey();
+        Integer minPriority = queue.minimumPriotity();
+        Assert.assertEquals(0, (int) minPriority);
+        Assert.assertEquals(10, (int) minKey);
     }
 
     @Test
     public void notIncreaseKey() {
-        queue.insert(new QueueTestItem(10, 1));
-        queue.decreaseKey(new QueueTestItem(10, 2));
-        QueueItem<Integer, Integer> maximum = queue.extractMinimum();
-        Assert.assertEquals(1, (int) maximum.getPriority());
-        Assert.assertEquals(10, (int) maximum.getKey());
+        queue.insert(10, 1);
+        queue.decreaseKey(10, 2);
+        Integer minKey = queue.minimumKey();
+        Integer minPriority = queue.minimumPriotity();
+        Assert.assertEquals(1, (int) minPriority);
+        Assert.assertEquals(10, (int) minKey);
     }
 }
 
