@@ -1,7 +1,7 @@
 package com.example.pq;
 
 public class BinaryHeapMaxPriorityQueue<ItemKey, ItemPriority extends Comparable<ItemPriority>>
-        extends BinaryHeapPriorityQueue<ItemKey, ItemPriority>
+        extends AbstractBinaryHeapPriorityQueue<ItemKey, ItemPriority>
         implements MaxPriorityQueue<ItemKey, ItemPriority> {
 
     public BinaryHeapMaxPriorityQueue() {

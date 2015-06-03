@@ -52,8 +52,8 @@ public class BinaryHeapMaxPriorityQueueTest {
             queue.insert(i, i);
         }
         for (int i = 1, priority = count; i <= count; ++i, --priority) {
-            Integer maximumKey = queue.topKey();
-            Integer maximumPriority = queue.topPriority();
+            Integer maximumKey = queue.maximumKey();
+            Integer maximumPriority = queue.maximumPriority();
             queue.extractMaximum();
             Assert.assertEquals(count - i, queue.size());
             Assert.assertEquals(priority, (int) maximumKey);

@@ -53,8 +53,8 @@ public class BinaryHeapMinPriorityQueueTest {
             queue.insert(i, i);
         }
         for (int i = 1, priority = 1; i <= count; ++i, ++priority) {
-            Integer maximumKey = queue.topKey();
-            Integer maximumPriority = queue.topPriority();
+            Integer maximumKey = queue.minimumKey();
+            Integer maximumPriority = queue.minimumPriotity();
             queue.extractMinimum();
             Assert.assertEquals(count - i, queue.size());
             Assert.assertEquals(priority, (int) maximumPriority);
@@ -67,15 +67,15 @@ public class BinaryHeapMinPriorityQueueTest {
         queue.insert(11, 1);
         queue.insert(22, 2);
         queue.insert(33, 3);
-        Integer key = queue.topKey();
-        Integer priority = queue.topPriority();
+        Integer key = queue.minimumKey();
+        Integer priority = queue.minimumPriotity();
         queue.extractMinimum();
         Assert.assertEquals(1, (int) priority);
         Assert.assertEquals(11, (int) key);
         queue.insert(44, 4);
         queue.insert(55, 5);
-        key = queue.topKey();
-        priority = queue.topPriority();
+        key = queue.minimumKey();
+        priority = queue.minimumPriotity();
         Assert.assertEquals(2, (int) priority);
         Assert.assertEquals(22, (int) key);
     }

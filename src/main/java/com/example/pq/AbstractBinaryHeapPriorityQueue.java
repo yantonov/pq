@@ -3,7 +3,7 @@ package com.example.pq;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BinaryHeapPriorityQueue<ItemKey, ItemPriority extends Comparable<ItemPriority>>
+public abstract class AbstractBinaryHeapPriorityQueue<ItemKey, ItemPriority extends Comparable<ItemPriority>>
         implements AbstractPriorityQueue<ItemKey, ItemPriority> {
 
     private List<ItemKey> queueKey;
@@ -11,7 +11,7 @@ public abstract class BinaryHeapPriorityQueue<ItemKey, ItemPriority extends Comp
     private KeyMapper<ItemKey> keyMapper;
     private int queueSize;
 
-    public BinaryHeapPriorityQueue() {
+    public AbstractBinaryHeapPriorityQueue() {
         initQueue();
         this.keyMapper = new HashMapKeyMapper<ItemKey>();
     }
@@ -24,7 +24,7 @@ public abstract class BinaryHeapPriorityQueue<ItemKey, ItemPriority extends Comp
         this.queuePriority.add(null);
     }
 
-    public BinaryHeapPriorityQueue(KeyMapper<ItemKey> keyMapper) {
+    public AbstractBinaryHeapPriorityQueue(KeyMapper<ItemKey> keyMapper) {
         this();
         this.keyMapper = keyMapper;
     }
@@ -54,24 +54,21 @@ public abstract class BinaryHeapPriorityQueue<ItemKey, ItemPriority extends Comp
         }
     }
 
-    @Override
-    public ItemKey topKey() {
+    protected ItemKey topKey() {
         if (queueSize == 0) {
             return null;
         }
        return queueKey.get(1);
     }
 
-    @Override
-    public ItemPriority topPriority() {
+    protected ItemPriority topPriority() {
         if (queueSize == 0) {
             return null;
         }
         return queuePriority.get(1);
     }
 
-    @Override
-    public void extract() {
+    protected void extract() {
         ItemKey key = queueKey.get(1);
         keyMapper.remove(key);
         if (queueSize > 1) {
@@ -108,8 +105,7 @@ public abstract class BinaryHeapPriorityQueue<ItemKey, ItemPriority extends Comp
         }
     }
 
-    @Override
-    public boolean changeKey(ItemKey key, ItemPriority priotity) {
+    protected boolean changeKey(ItemKey key, ItemPriority priotity) {
         if (!keyMapper.contains(key)) {
             return false;
         }
@@ -130,7 +126,6 @@ public abstract class BinaryHeapPriorityQueue<ItemKey, ItemPriority extends Comp
         ItemKey secondKey = queueKey.get(secondIndex);
         ItemPriority firstPriority = queuePriority.get(firstIndex);
         ItemPriority secondPriority = queuePriority.get(secondIndex);
-
 
         keyMapper.put(firstKey, secondIndex);
         keyMapper.put(secondKey, firstIndex);

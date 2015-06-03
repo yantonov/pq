@@ -1,7 +1,7 @@
 package com.example.pq;
 
 public class BinaryHeapMinPriorityQueue<ItemKey, ItemPriority extends Comparable<ItemPriority>>
-        extends BinaryHeapPriorityQueue<ItemKey, ItemPriority> implements MinPriorityQueue<ItemKey, ItemPriority> {
+        extends AbstractBinaryHeapPriorityQueue<ItemKey, ItemPriority> implements MinPriorityQueue<ItemKey, ItemPriority> {
 
     public BinaryHeapMinPriorityQueue() {
     }
